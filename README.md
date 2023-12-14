@@ -63,3 +63,9 @@ services:
 
 **Requires license. [Get a 14 day free trail license here](https://www.sonarsource.com/products/sonarqube/developer-edition/marketplace/?serverId=243B8A4D-AYxfui1Aune7s8eXOfbP&ncloc=0&sourceEdition=developer)**
 
+---
+
+## BitBucket Config
+
+In repo settings turn on piplines. [Add config Yaml file to repository](https://support.atlassian.com/bitbucket-cloud/docs/configure-your-first-pipeline/)
+
