@@ -1,0 +1,6 @@
+{
+  "MD013": false,
+"no-inline-html": {
+    "allowed_elements": ["details", "summary", "h1", "h2", "h3", "h4", "h5", "p", "code", "kbd", "samp", "sub", "sup", "ins", "del", "var", "dl", "dt", "dd", "q"]
+}
+}
