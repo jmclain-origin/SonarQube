@@ -10,20 +10,22 @@ Minimum Requirements
 - 16gb Storage space
 - x2 CPU's
 
+<sub>*~ I think it runs best on t3.medium, but it should be able to run on a t3.micro*</sub>
 
 ---
 
 ## EC2 Setup Steps
 
-1. Update & Install Dependencies
-    1. Java 11
-    2. Nginx
-    3. Docker
-    4. Vim
-2. Configure system dependencies
-    1. Java
-    2. ElasticSearch
-    3. Nginx
+1. [Update OS](#update-ubuntu)
+1. [install packages](#install-packages)
+    1. [ ] Nginx
+    2. [ ]  Docker
+    3. ==Vim
+    4. Java 11
+1. Configure system dependencies
+    1. [Java](#system-config)
+    2. [ElasticSearch](#elasticsearch)
+    3. [Nginx](#nginx)
     4. Docker
 
 ---
@@ -38,7 +40,7 @@ sudo apt update && sudo apt upgrade -y
 
 ---
 
-### Install dependencies
+### Install packages
 
 Shell command:
 
@@ -48,7 +50,7 @@ sudo apt install openjdk-11-jdk nginx vim
 
 ---
 
-### Configure Java & Elasticsearch
+### System config
 
 #### Java
 
@@ -86,7 +88,36 @@ $>sudo sysctl -w vm.max_map_count=262144
 
 ---
 
-## Docker Setup
+## Nginx
+
+Shell command:
+
+```bash
+$>sudo vim /etc/nginx/sites-enabled/default
+```
+
+Add content inside `server` scope
+
+```conf
+server {
+    location / {
+        proxy_pass http://localhost:9000/;
+        proxy_buffering off;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-Host $host;
+        proxy_set_header X-Forwarded-Port $server_port;
+    }
+}
+```
+
+Restart Nginx service
+
+```bash
+$>sudo systemctl restart nginx
+```
+
+
+## Docker
 
 Install Docker
 
@@ -163,35 +194,6 @@ $>sudo docker stats
 
 ---
 
-## Reverse Proxy setup with Nginx
-
-Shell command:
-
-```bash
-$>sudo vim /etc/nginx/sites-enabled/default
-```
-
-Add content inside `server` scope
-
-```conf
-server {
-    # present content
-
-    location / {
-        proxy_pass http://localhost:9000/;
-        proxy_buffering off;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Host $host;
-        proxy_set_header X-Forwarded-Port $server_port;
-    }
-}
-```
-
-Restart Nginx service
-
-```bash
-$>sudo systemctl restart nginx
-```
 
 ---
 
@@ -209,62 +211,3 @@ https traffic require SSL certificate to be setup
 
 ---
 
-
-
-[Get started with Bitbucket Pipelines](https://support.atlassian.com/bitbucket-cloud/docs/get-started-with-bitbucket-pipelines/)
-
-[SonarQube Bitbucket Intergration](https://docs.sonarsource.com/sonarqube/latest/devops-platform-integration/bitbucket-integration/bitbucket-cloud-integration/)
-
-Create [Bitbucket OAuth consumer](https://support.atlassian.com/bitbucket-cloud/docs/use-oauth-on-bitbucket-cloud/)
-
-Collect [Bitbucket Username](https://bitbucket.org/account/settings/)
-
-Create [App Password](https://bitbucket.org/account/settings/app-passwords/)
-
-Input gather data as prompted in SonarQube dashbroad
-
-> 💡 If successful you should see list of current repositories hosted on [Bitbucket](https://bitbucket.org)
-
-## Analyzing Code with Pipelines
-
-Add environment variables to repository  
-  Generate in SonarQube dashbroad
-
-- SONAR_TOKEN
-- SONAR_HOST_URL
-
-Add config file to root directory of repository  
-  `bitbucket-pipeline.yml`
-
-```yaml
-# Sample format of YAML file
-# source: https://docs.sonarsource.com/sonarqube/latest/devops-platform-integration/bitbucket-integration/bitbucket-cloud-integration/
-image: <image for build>
-
-definitions:
-  steps: &build-step
-    - step:
-        name: SonarQube analysis
-        image: sonarsource/sonar-scanner-cli:latest
-        caches:
-          - sonar
-        script:
-          - sonar-scanner
-  caches:
-    sonar: /opt/sonar-scanner/.sonar
-
-clone:
-  depth: full
-
-pipelines:
-  branches:
-    '{master,main,develop}':
-      - step: *build-step
-
-  pull-requests:
-    '**':
-      - step: *build-step
-
-```
-
-> :warning: YAML configuration will vary based upon codebase for analysis
