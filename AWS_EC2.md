@@ -19,9 +19,9 @@ Minimum Requirements
 1. [Update OS](#update-ubuntu)
 1. [install packages](#install-packages)
     1. [ ] Nginx
-    2. [ ]  Docker
-    3. ==Vim
-    4. Java 11
+    2. [ ] Docker
+    3. [ ] Vim
+    4. [ ] Java 11
 1. Configure system dependencies
     1. [Java](#system-config)
     2. [ElasticSearch](#elasticsearch)
@@ -96,7 +96,7 @@ Shell command:
 $>sudo vim /etc/nginx/sites-enabled/default
 ```
 
-Add content inside `server` scope
+Add to file content inside `server` scope
 
 ```conf
 server {
