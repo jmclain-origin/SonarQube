@@ -10,7 +10,7 @@ Minimum Requirements
 - 16gb Storage space
 - x2 CPU's
 
-<sub>*~ I think it runs best on t3.medium, but it should be able to run on a t3.micro*</sub>
+<sub>_~ I think it runs best on t3.medium, but it should be able to run on a t3.micro_</sub>
 
 ---
 
@@ -18,15 +18,15 @@ Minimum Requirements
 
 1. [Update OS](#update-ubuntu)
 1. [install packages](#install-packages)
-    1. [ ] Nginx
-    2. [ ] Docker
-    3. [ ] Vim
-    4. [ ] Java 11
+   1. [ ] Nginx
+   2. [ ] Docker
+   3. [ ] Vim
+   4. [ ] Java 11
 1. Configure system dependencies
-    1. [Java](#system-config)
-    2. [ElasticSearch](#elasticsearch)
-    3. [Nginx](#nginx)
-    4. Docker
+   1. [Java](#system-config)
+   2. [ElasticSearch](#elasticsearch)
+   3. [Nginx](#nginx)
+   4. Docker
 
 ---
 
@@ -59,10 +59,10 @@ Add installation to environment variables
 Shell command:
 
 ```bash
-$>sudo vim /etc/environment
+sudo vim /etc/environment
 ```
 
-__Content:__
+**Content:**
 
 ```conf
 # FILE: /etc/environment #
@@ -73,17 +73,17 @@ $JAVA_HOME=/usr/lib/jvm/java-11-openjdk-amd64
 Shell command:
 
 ```bash
-$>source /etc/environment
+source /etc/environment
 ```
 
 #### Elasticsearch
 
-Set memory limit <sub>* linux only</sub>
+Set memory limit <sub>\* linux only</sub>
 
 _Shell command:_
 
 ```bash
-$>sudo sysctl -w vm.max_map_count=262144
+sudo sysctl -w vm.max_map_count=262144
 ```
 
 ---
@@ -93,7 +93,7 @@ $>sudo sysctl -w vm.max_map_count=262144
 Shell command:
 
 ```bash
-$>sudo vim /etc/nginx/sites-enabled/default
+sudo vim /etc/nginx/sites-enabled/default
 ```
 
 Add to file content inside `server` scope
@@ -113,9 +113,8 @@ server {
 Restart Nginx service
 
 ```bash
-$>sudo systemctl restart nginx
+sudo systemctl restart nginx
 ```
-
 
 ## Docker
 
@@ -124,7 +123,7 @@ Install Docker
 Shell command:
 
 ```bash
-$>sudo snap install docker
+sudo snap install docker
 ```
 
 Create source directory and Compose file for Docker
@@ -132,13 +131,13 @@ Create source directory and Compose file for Docker
 Shell command:
 
 ```bash
-$>vim ~/sonarqube/compose.yml
+mkdir ~/sonarqube && vim ~/sonarqube/compose.yml
 ```
 
 File content:
 
 ```yaml
-version: "3"
+version: '3'
 
 services:
   sonarqube:
@@ -154,7 +153,7 @@ services:
       - sonarqube_extensions:/opt/sonarqube/extensions
       - sonarqube_logs:/opt/sonarqube/logs
     ports:
-      - "9000:9000"
+      - '9000:9000'
   db:
     image: postgres:12
     environment:
@@ -177,23 +176,20 @@ Start Docker containers
 Shell command:
 
 ```bash
-$>sudo docker compose up -d
+sudo docker compose up -d
 ```
 
 _*Checking logs*_
 
 ```bash
-$>sudo docker compose logs sonarqube_sonarqube_1
+sudo docker compose logs sonarqube_sonarqube_1
 ```
 
-*_Checking Docker status_*
+_*Checking Docker status*_
 
 ```bash
-$>sudo docker stats
+sudo docker stats
 ```
-
----
-
 
 ---
 
@@ -204,10 +200,9 @@ example: *http://ec2-11-222-33-44.us-east-2.compute.amazonaws.com*
 ### default credentials
 
 username: `admin`  
-  password: `admin`
+ password: `admin`
 
-> :warning: make sure to visit __http__  
-https traffic require SSL certificate to be setup
+> :warning: make sure to visit **http**  
+> https traffic require SSL certificate to be setup
 
 ---
-
