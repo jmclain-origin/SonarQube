@@ -176,6 +176,8 @@ Start Docker containers
 Shell command:
 
 ```bash
+cd ~/sonarqube
+
 sudo docker compose up -d
 ```
 
